@@ -32,6 +32,7 @@ class QuoteRequest
     public float $value = 0.0;
     public string $contents = '';
     public float $insuredValue = 0.0;
+    public bool $isInsured = false;
     public string $currency = 'EUR';
     public bool $isDutiable = true;
     public string $incoterm = '';

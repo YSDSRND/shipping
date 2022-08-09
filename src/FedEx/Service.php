@@ -498,10 +498,6 @@ EOD;
                         'Units' => $totalWeight->getUnit() === Pound::unit() ? 'LB' : 'KG',
                         'Value' => $totalWeight->format(2),
                     ] : null,
-                    'TotalInsuredValue' => [
-                        'Currency' => $request->currency,
-                        'Amount' => number_format($request->insuredValue, 2, '.', ''),
-                    ],
                     'Shipper' => [
                         'Contact' => [
                             'PersonName' => $request->sender->contactName,
@@ -583,8 +579,10 @@ EOD;
                     'RequestedPackageLineItems' => [
                         [
                             'SequenceNumber' => $parcelIndex + 1,
-                            'GroupNumber' => 1,
-                            'GroupPackageCount' => 1,
+                            'InsuredValue' => [
+                                'Currency' => strval($parcel->insured_value->getCurrency()),
+                                'Amount' => number_format(((int) $parcel->insured_value->getAmount()) / 100, 2, '.', ''),
+                            ],
                             'Weight' => [
                                 'Units' => $request->units == ShipmentRequest::UNITS_IMPERIAL ? 'LB' : 'KG',
                                 'Value' => $parcel->weight->format(2),
