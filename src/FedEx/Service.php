@@ -581,7 +581,7 @@ EOD;
                             'SequenceNumber' => $parcelIndex + 1,
                             'InsuredValue' => [
                                 'Currency' => $request->isInsured ? strval($parcel->insured_value->getCurrency()): $request->currency,
-                                'Amount' => $request->isInsured ? number_format(((int) $parcel->insured_value->getAmount()) / 100, 2, '.', '') : 100,
+                                'Amount' => $request->isInsured ? number_format(((int) $parcel->insured_value->getAmount()) / 100, 2, '.', '') : 0,
                             ],
                             'Weight' => [
                                 'Units' => $request->units == ShipmentRequest::UNITS_IMPERIAL ? 'LB' : 'KG',
