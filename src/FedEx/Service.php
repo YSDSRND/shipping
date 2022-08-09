@@ -127,7 +127,6 @@ class Service implements ServiceInterface
      */
     public function getQuotes(QuoteRequest $request): PromiseInterface
     {
-        Console.WriteLine("hello testing");
         [$lengthUnit, $weightUnit] = $request->units === ShipmentRequest::UNITS_IMPERIAL
             ? [Inch::unit(), Pound::unit()]
             : [Centimeter::unit(), Kilogram::unit()];
@@ -353,6 +352,8 @@ EOD;
                     (float) $dimensions['Height'],
                     (float) $dimensions['Length'],
                     (float) $weight['Value'],
+                    0,
+                    new Currency('USD'),
                     $dimensions['Units'] === 'IN' ? Inch::unit() : Centimeter::unit(),
                     $weight['Units'] === 'LB' ? Pound::unit() : Kilogram::unit()
                 );

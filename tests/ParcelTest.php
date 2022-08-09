@@ -11,6 +11,8 @@ use Vinnia\Util\Measurement\Mass;
 use Vinnia\Util\Measurement\Meter;
 use Vinnia\Util\Measurement\Millimeter;
 use Vinnia\Util\Measurement\Unit;
+use Money\Money;
+use Money\Currency;
 
 class ParcelTest extends TestCase
 {
@@ -20,7 +22,8 @@ class ParcelTest extends TestCase
             new Length(4.0, Meter::unit()),
             new Length(2.0, Meter::unit()),
             new Length(3.0, Meter::unit()),
-            new Mass(0.0, Kilogram::unit())
+            new Mass(0.0, Kilogram::unit()),
+            new Money(0, new Currency('USD'))
         );
         $volume = $parcel->getVolume(Meter::unit());
         $this->assertEquals(24.0, $volume);
@@ -32,7 +35,8 @@ class ParcelTest extends TestCase
             new Length(50.0, Centimeter::unit()),
             new Length(300.0, Millimeter::unit()),
             new Length(2.0, Meter::unit()),
-            new Mass(0.0, Kilogram::unit())
+            new Mass(0.0, Kilogram::unit()),
+            new Money(0, new Currency('USD'))
         );
         $volume = $parcel->getVolume(Meter::unit());
         $this->assertEquals(0.3, $volume);

@@ -10,6 +10,8 @@ use Vinnia\Util\Measurement\LengthUnit;
 use Vinnia\Util\Measurement\Mass;
 use Vinnia\Util\Measurement\MassUnit;
 use Vinnia\Util\Measurement\Meter;
+use Money\Money;
+use Money\Currency;
 
 class Parcel implements JsonSerializable
 {
@@ -17,13 +19,15 @@ class Parcel implements JsonSerializable
     public Length $height;
     public Length $length;
     public Mass $weight;
+    public Money $insured_value;
 
-    public function __construct(Length $width, Length $height, Length $length, Mass $weight)
+    public function __construct(Length $width, Length $height, Length $length, Mass $weight, Money $insured_value)
     {
         $this->width = $width;
         $this->height = $height;
         $this->length = $length;
         $this->weight = $weight;
+        $this->insured_value = $insured_value;
     }
 
     public function convertTo(LengthUnit $lengthUnit, MassUnit $weightUnit): self
@@ -32,7 +36,8 @@ class Parcel implements JsonSerializable
             $this->width->convertTo($lengthUnit),
             $this->height->convertTo($lengthUnit),
             $this->length->convertTo($lengthUnit),
-            $this->weight->convertTo($weightUnit)
+            $this->weight->convertTo($weightUnit),
+            $this->insured_value
         );
     }
 
@@ -54,6 +59,7 @@ class Parcel implements JsonSerializable
             'height' => $this->height,
             'length' => $this->length,
             'weight' => $this->weight,
+            'insured_value' => $this->insured_value,
         ];
     }
 
@@ -67,17 +73,25 @@ class Parcel implements JsonSerializable
         float $height,
         float $length,
         float $weight,
+        ?int $insured_value = null,
+        ?Currency $currency_code = null,
         ?LengthUnit $lengthUnit = null,
         ?MassUnit $weightUnit = null
     ): Parcel {
         $lengthUnit = $lengthUnit ?? Meter::unit();
         $weightUnit = $weightUnit ?? Kilogram::unit();
+        $insured_value = $insured_value ?? 0;
+        $currency_code = $currency_code ?? new Currency("USD");
 
         return new Parcel(
             new Length($width, $lengthUnit),
             new Length($height, $lengthUnit),
             new Length($length, $lengthUnit),
-            new Mass($weight, $weightUnit)
+            new Mass($weight, $weightUnit),
+            new Money(
+                $insured_value,
+                $currency_code
+            )
         );
     }
 
