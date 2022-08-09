@@ -96,7 +96,7 @@ TXT;
         );
 
         $request = new ShipmentRequest('P', $sender, $recipient, [
-            Parcel::make(10.0, 10.0, 10.0, 2.0, 0, new Currency('USD'), Centimeter::unit(), Kilogram::unit()),
+            Parcel::make(10.0, 10.0, 10.0, 2.0, 0, 'USD', Centimeter::unit(), Kilogram::unit()),
         ]);
         $request->exportDeclarations = [
             new ExportDeclaration('Solid cube of titanium', 'CH', 1, 100.00, 'CHF', new Mass(2.0, Kilogram::unit())),
@@ -141,7 +141,7 @@ TXT;
         );
 
         $request = new ShipmentRequest('K', $sender, $recipient, [
-            Parcel::make(10.0, 10.0, 10.0, 2.0, 0, new Currency('USD'), Centimeter::unit(), Kilogram::unit()),
+            Parcel::make(10.0, 10.0, 10.0, 2.0, 0, 'USD', Centimeter::unit(), Kilogram::unit()),
         ]);
         $request->exportDeclarations = [
             new ExportDeclaration('Solid cube of titanium', 'CH', 1, 100.00, 'CHF', new Mass(2.0, Kilogram::unit())),

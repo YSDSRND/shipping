@@ -74,7 +74,7 @@ class Parcel implements JsonSerializable
         float $length,
         float $weight,
         ?int $insured_value = null,
-        ?Currency $currency_code = null,
+        ?string $currency_code = null,
         ?LengthUnit $lengthUnit = null,
         ?MassUnit $weightUnit = null
     ): Parcel {
@@ -90,7 +90,7 @@ class Parcel implements JsonSerializable
             new Mass($weight, $weightUnit),
             new Money(
                 $insured_value,
-                $currency_code
+                new Currency($currency_code)
             )
         );
     }

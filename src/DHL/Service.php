@@ -301,7 +301,7 @@ EOD;
                         (float) ($details['Depth'] ?? 0.00),
                         (float) ($details['Weight'] ?? 0.00),
                         0,
-                        new Currency('USD'),
+                        'USD',
                         ($details['WeightUnit'] ?? 'K') === 'K' ? Centimeter::unit() : Inch::unit(),
                         ($details['WeightUnit'] ?? 'K') === 'K' ? Kilogram::unit() : Pound::unit()
                     );

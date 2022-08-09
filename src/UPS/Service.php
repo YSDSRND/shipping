@@ -298,7 +298,7 @@ class Service implements ServiceInterface
                     0.00,
                     (float) $package['PackageWeight']['Weight'],
                     0,
-                    new Currency('USD'),
+                    'USD',
                     Centimeter::unit(),
                     $package['PackageWeight']['UnitOfMeasurement']['Code'] === 'LBS'
                         ? Pound::unit()

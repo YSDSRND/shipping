@@ -353,7 +353,7 @@ EOD;
                     (float) $dimensions['Length'],
                     (float) $weight['Value'],
                     0,
-                    new Currency('USD'),
+                    'USD',
                     $dimensions['Units'] === 'IN' ? Inch::unit() : Centimeter::unit(),
                     $weight['Units'] === 'LB' ? Pound::unit() : Kilogram::unit()
                 );
