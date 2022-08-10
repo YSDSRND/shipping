@@ -81,7 +81,7 @@ class Parcel implements JsonSerializable
         $lengthUnit = $lengthUnit ?? Meter::unit();
         $weightUnit = $weightUnit ?? Kilogram::unit();
         $insured_value = $insured_value ? $insured_value : 0;
-        $currency_code = $currency_code ? $currency_code : new Currency("USD");
+        $currency_code = $currency_code ? $currency_code : "USD";
 
         return new Parcel(
             new Length($width, $lengthUnit),
