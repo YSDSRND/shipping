@@ -485,7 +485,7 @@ EOD;
                 ],
                 'Version' => [
                     'ServiceId' => 'ship',
-                    'Major' => 25,
+                    'Major' => 28,
                     'Intermediate' => 0,
                     'Minor' => 0,
                 ],
@@ -619,7 +619,7 @@ EOD;
         $shipRequest = Xml::fromArray($data);
 
         $body = <<<EOD
-<p:Envelope xmlns:p="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/ship/v25">
+<p:Envelope xmlns:p="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/ship/v28">
    <p:Body>$shipRequest</p:Body>
 </p:Envelope>
 EOD;
@@ -679,7 +679,7 @@ EOD;
                 ],
                 'Version' => [
                     'ServiceId' => 'ship',
-                    'Major' => 21,
+                    'Major' => 28,
                     'Intermediate' => 0,
                     'Minor' => 0,
                 ],
@@ -692,7 +692,7 @@ EOD;
         ]);
 
         $body = <<<EOD
-<p:Envelope xmlns:p="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/ship/v21">
+<p:Envelope xmlns:p="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/ship/v28">
    <p:Body>$deleteRequest</p:Body>
 </p:Envelope>
 EOD;
