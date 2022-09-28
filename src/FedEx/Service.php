@@ -168,7 +168,7 @@ class Service implements ServiceInterface
                 ],
                 'Version' => [
                     'ServiceId' => 'crs',
-                    'Major' => 22,
+                    'Major' => 28,
                     'Intermediate' => 0,
                     'Minor' => 0,
                 ],
@@ -200,7 +200,7 @@ class Service implements ServiceInterface
         $xml = Xml::fromArray($rateRequest);
 
         $body = <<<EOD
-<p:Envelope xmlns:p="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/rate/v22">
+<p:Envelope xmlns:p="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/rate/v28">
    <p:Body>{$xml}</p:Body>
 </p:Envelope>
 EOD;
@@ -754,7 +754,7 @@ EOD;
                 ],
                 'Version' => [
                     'ServiceId' => 'vacs',
-                    'Major' => 8,
+                    'Major' => 14,
                     'Intermediate' => 0,
                     'Minor' => 0,
                 ],
@@ -772,7 +772,7 @@ EOD;
 
         $xml = Xml::fromArray($data);
         $body = <<<EOD
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/vacs/v8">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/vacs/v14">
    <soapenv:Body>$xml</soapenv:Body>
 </soapenv:Envelope>
 EOD;
@@ -918,7 +918,7 @@ EOD;
                 ],
                 'Version' => [
                     'ServiceId' => 'disp',
-                    'Major' => 17,
+                    'Major' => 23,
                     'Intermediate' => 0,
                     'Minor' => 0,
                 ],
@@ -953,7 +953,7 @@ EOD;
 
         $body = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/pickup/v17">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/pickup/v23">
    <soapenv:Header />
    <soapenv:Body>{$trackRequest}</soapenv:Body>
 </soapenv:Envelope>
@@ -1047,7 +1047,7 @@ EOD;
                 ],
                 'Version' => [
                     'ServiceId' => 'disp',
-                    'Major' => 17,
+                    'Major' => 23,
                     'Intermediate' => 0,
                     'Minor' => 0,
                 ],
@@ -1060,7 +1060,7 @@ EOD;
 
         $body = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/pickup/v17">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://fedex.com/ws/pickup/v23">
    <soapenv:Header />
    <soapenv:Body>{$trackRequest}</soapenv:Body>
 </soapenv:Envelope>
