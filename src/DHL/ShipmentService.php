@@ -64,10 +64,6 @@ class ShipmentService extends ServiceLike implements ShipmentServiceInterface
             $specialServices[] = 'SA';
         }
 
-        if ($request->insuredValue > 0) {
-            $specialServices[] = 'II';
-        }
-
         $lengthUnitName = $lengthUnit === Inch::unit() ? 'I' : 'C';
         $weightUnitName = $weightUnit === Pound::unit() ? 'L' : 'K';
 
@@ -94,7 +90,6 @@ class ShipmentService extends ServiceLike implements ShipmentServiceInterface
                 'MetaData' => static::getMetaData(),
             ],
             'LanguageCode' => 'en',
-            'PiecesEnabled' => 'Y',
             'Billing' => [
                 'ShipperAccountNumber' => $this->credentials->accountNumber,
                 'ShippingPaymentType' => 'S',
@@ -102,11 +97,9 @@ class ShipmentService extends ServiceLike implements ShipmentServiceInterface
             ],
             'Consignee' => [
                 'CompanyName' => $request->recipient->name,
-                'AddressLine' => array_filter([
-                    $request->recipient->address1,
-                    $request->recipient->address2,
-                    $request->recipient->address3,
-                ]),
+                'AddressLine1' => strlen($request->recipient->address1) > 0 ? $request->recipient->address1 : null,
+                'AddressLine2' => strlen($request->recipient->address2) > 0 ? $request->recipient->address2 : null,
+                'AddressLine3' => strlen($request->recipient->address3) > 0 ? $request->recipient->address3 : null,
                 'City' => $request->recipient->city,
                 'PostalCode' => $request->recipient->zip,
                 'CountryCode' => $request->recipient->countryCode,
@@ -117,8 +110,9 @@ class ShipmentService extends ServiceLike implements ShipmentServiceInterface
                 ],
             ],
             'Dutiable' => [
-                'DeclaredValue' => number_format($value, 2, '.', ''),
-                'DeclaredCurrency' => $request->currency,
+                'DeclaredValue' => $request->isDutiable ? number_format($value, 2, '.', '') : null,
+                'DeclaredCurrency' => $request->isDutiable ? $request->currency : null,
+                'TermsOfTrade' => $request->isDutiable ? $request->incoterm : null,
             ],
             'ExportDeclaration' => [
                 'InvoiceNumber' => $request->reference,
@@ -146,29 +140,23 @@ class ShipmentService extends ServiceLike implements ShipmentServiceInterface
                 'ReferenceID' => $request->reference,
             ],
             'ShipmentDetails' => [
-                'NumberOfPieces' => count($parcels),
                 'Pieces' => [
                     'Piece' => $parcelsData,
                 ],
-                'Weight' => $totalWeight->format(2),
                 'WeightUnit' => $weightUnitName,
                 'GlobalProductCode' => $request->service,
                 'Date' => $request->date->format('Y-m-d'),
                 'Contents' => $contents,
-                //'DoorTo' => 'DD',
                 'DimensionUnit' => $lengthUnitName,
-                'InsuredAmount' => number_format($request->insuredValue, 2, '.', ''),
                 'IsDutiable' => $request->isDutiable ? 'Y' : 'N',
                 'CurrencyCode' => $request->currency,
             ],
             'Shipper' => [
                 'ShipperID' => $this->credentials->accountNumber,
                 'CompanyName' => $request->sender->name,
-                'AddressLine' => array_filter([
-                    $request->sender->address1,
-                    $request->sender->address2,
-                    $request->sender->address3,
-                ]),
+                'AddressLine1' => strlen($request->sender->address1) > 0 ? $request->sender->address1 : null,
+                'AddressLine2' => strlen($request->sender->address2) > 0 ? $request->sender->address2 : null,
+                'AddressLine3' => strlen($request->sender->address3) > 0 ? $request->sender->address3 : null,
                 'City' => $request->sender->city,
                 'PostalCode' => $request->sender->zip,
                 'CountryCode' => $request->sender->countryCode,
@@ -192,16 +180,18 @@ class ShipmentService extends ServiceLike implements ShipmentServiceInterface
         // if we include these fields for a non-dutiable shipments
         // DHL will reject it for unknown reasons.
         if ($request->isDutiable) {
-            $data['Billing']['DutyPaymentType'] = $request->getPaymentTypeOfIncoterm() === ShipmentRequest::PAYMENT_TYPE_SENDER
-                ? 'S'
-                : 'R';
             $data['Billing']['DutyAccountNumber'] = $request->getPaymentTypeOfIncoterm() === ShipmentRequest::PAYMENT_TYPE_SENDER
                 ? $this->credentials->accountNumber
                 : null;
         }
 
-        if ($request->isDutiable && $request->incoterm) {
-            $data['Dutiable']['TermsOfTrade'] = $request->incoterm;
+        if ($request->insuredValue > 0) {
+            $data['SpecialService'][] = [
+                'SpecialServiceType' => 'II',
+                'ChargeValue' => number_format($request->insuredValue, 2, '.', ''),
+                'CurrencyCode' => $request->currency,
+            ];
+
         }
 
         if ($request->internationalTransactionNo) {
@@ -210,6 +200,7 @@ class ShipmentService extends ServiceLike implements ShipmentServiceInterface
                 'ITN' => $request->internationalTransactionNo,
             ];
         }
+
 
         foreach ($request->extra as $key => $value) {
             Arrays::set($data, $key, $value);
@@ -220,7 +211,7 @@ class ShipmentService extends ServiceLike implements ShipmentServiceInterface
 
         $body = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
-<req:ShipmentRequest xmlns:req="http://www.dhl.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dhl.com ship-val-global-req.xsd" schemaVersion="6.2">
+<req:ShipmentRequest xmlns:req="http://www.dhl.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dhl.com ship-val-global-req.xsd" schemaVersion="10.0">
 {$shipmentRequest}
 </req:ShipmentRequest>
 EOD;
