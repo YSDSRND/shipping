@@ -288,7 +288,6 @@ EOD;
             $validator = new Validator([
                 'TrackDetails.Notification.Severity' => 'required|ne:ERROR',
                 'TrackDetails.Events' => 'array',
-                'TrackDetails.Service.Type' => 'required|string',
                 'TrackingDetails.PackageDimensions' => 'array',
             ]);
 
